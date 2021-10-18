@@ -9,7 +9,7 @@
    <script>
    window.onload = function() {
        // ви можете зробити скільки завгодно слайдів
-	   var img = new Image();
+	   //слайди
        let slides = [
            {
                title: "Cat",
@@ -28,21 +28,40 @@
 		   }
        ]
        Slider.initSlider(slides);
-   };
-</script>
+	   
+	   //кнопки переключатели
+		let left = document.getElementById("left");
+        left.addEventListener("click", ()=> {Slider.prevSlide()})
+        let right = document.getElementById("right");
+        right.addEventListener("click", ()=> {Slider.nextSlide()})
+		//показать / спрятать
+        let show = document.getElementById("show");
+        show.addEventListener('click',(event)=>{
+            if(document.getElementById('slider').style.display == 'none'){
+                document.getElementById('slider').style.display = 'block';
+                event.target.innerHTML="Hide";
+            }
+            else{
+                document.getElementById('slider').style.display = 'none';
+                event.target.innerHTML="Show";
+            }
+        })
+		//слайдшоу
+        let toggle = document.getElementById("start")
+		toggle.addEventListener('click', (event)=>{
+		if (event.target.classList.contains('start')){
+		   event.target.innerHTML = 'Start';
+		   clearInterval(interval)
+		} 
+		else {
+		   event.target.innerHTML = 'Stop';
+		   interval = setInterval(()=>{
+			   Slider.nextSlide();
+		   },1000)
+		}
+		event.target.classList.toggle('start')
+		})
 
-<script>
-	window.onload = function() {
-		document.addEventListener("keypress", (btn) {
-			if(btn.key.toLowerCase()==="s")
-			{
-				Slider.prevSlide();
-			}
-			else if(btn.key.toLowerCase()==="w")
-			{
-				Slider.nextSlide();
-			}
-		});
    };
 </script>
 
@@ -60,8 +79,10 @@
            <p></p>
        </article>
 	   <div id="slider"></div>
-		<button type="button" class="button_left" id="btn-left" onclick="Slider.prevSlide()">Prev</button>
-		<button type="button" class="button_right" id="btn-right" onclick="Slider.nextSlide()">Next</button>
+		<button type="button" class="button_left" id="left">Prev</button>
+		<button type="button" class="button_right" id="right">Next</button>
+		<button type="button" class="button_show" id="show">Show</button>
+		<button type="button" class="button_slide" id="start">Start</button>
 	</main>
    <nav class="left column">
        <h3>Left heading</h3>
