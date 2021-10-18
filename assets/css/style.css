@@ -77,7 +77,8 @@ a.link {
 	padding: 5px 15px;
 	border: none;
 	position: absolute;
-	top: 270px;
+	top: 350px;
+	left: 30px;
 }
 .button_right{
 	background: #dae9bc;
@@ -87,6 +88,6 @@ a.link {
 	padding: 5px 15px;
 	border: none;
 	position: absolute;
-	top: 270px;
-	left: 70px;
+	top: 350px;
+	left: 90px;
 }
