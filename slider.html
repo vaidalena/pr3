@@ -12,16 +12,19 @@
 	   //слайди
        let slides = [
            {
+               index: 1,
                title: "Cat",
 			   background: "public/images/1.jpg",
 			   link: "https://ru.wikipedia.org/wiki/%D0%9A%D0%BE%D1%88%D0%BA%D0%B0"
            }, 
 		   {
-               title: "Book",
-			   background: "public/images/2.jpg",
-			   link: "https://ru.wikipedia.org/wiki/%D0%9A%D0%BD%D0%B8%D0%B3%D0%B0"
+                index: 2,
+                title: "Book",
+			    background: "public/images/2.jpg",
+			    link: "https://ru.wikipedia.org/wiki/%D0%9A%D0%BD%D0%B8%D0%B3%D0%B0"
            },
 		   {
+                index: 3,
 				title: "Butterfly",
 			    background: "public/images/3.jpg",
 			    link: "https://ru.wikipedia.org/wiki/%D0%A7%D0%B5%D1%88%D1%83%D0%B5%D0%BA%D1%80%D1%8B%D0%BB%D1%8B%D0%B5"
@@ -61,7 +64,14 @@
 		}
 		event.target.classList.toggle('start')
 		})
-
+        
+        //переключатели
+        let b1 = document.getElementById("1");
+        setSlide(1);
+        let b2 = document.getElementById("2");
+        setSlide(2);
+        let b3 = document.getElementById("3");
+        setSlide(3);
    };
 </script>
 
@@ -83,7 +93,8 @@
 		<button type="button" class="button_right" id="right">Next</button>
 		<button type="button" class="button_show" id="show">Show</button>
 		<button type="button" class="button_slide" id="start">Start</button>
-	</main>
+        <div id="btns"></div>
+    </main>
    <nav class="left column">
        <h3>Left heading</h3>
        <ul>
@@ -105,4 +116,3 @@
 </div>
 </body>
 </html>
-

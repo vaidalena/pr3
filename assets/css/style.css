@@ -98,3 +98,21 @@ button{
 	top: 350px;
 	left: 216px;
 }
+.btn1{
+   background: #cfc9cd;
+   position: absolute;
+	top: 260px;
+	left: 30px;
+}
+.btn2{
+   background: #cfc9cd;
+   position: absolute;
+	top: 290px;
+	left: 30px;
+}
+.btn3{
+   background: #cfc9cd;
+   position: absolute;
+	top: 320px;
+	left: 30px;
+}
