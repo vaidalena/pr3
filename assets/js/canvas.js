@@ -7,68 +7,68 @@ function canvas(selector, options){
  
     // отримання контексту для малювання
     const context = canvas.getContext('2d')
-   // отримуємо координати canvas відносно viewport
+    // отримуємо координати canvas відносно viewport
     const rect = canvas.getBoundingClientRect();
  
-   // ...
+    // ...
     let isPaint = false // чи активно малювання
     let points = [] //масив з точками
 
     // об’являємо функцію додавання точок в масив
     const addPoint = (x, y, dragging) => {
-    // преобразуємо координати події кліка миші відносно canvas
-    points.push({
-        x: (x - rect.left),
-        y: (y - rect.top),
-        dragging: dragging
-    })
+        // преобразуємо координати події кліка миші відносно canvas
+        points.push({
+            x: (x - rect.left),
+            y: (y - rect.top),
+            dragging: dragging
+        })
     }
 
 	// головна функція для малювання
     const redraw = () => {
-    //очищуємо  canvas
-    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+        //очищуємо  canvas
+        context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
-    context.strokeStyle = options.strokeColor;
-    context.lineJoin = "round";
-    context.lineWidth = options.strokeWidth;
-    let prevPoint = null;
-    for (let point of points){
-        context.beginPath();
-        if (point.dragging && prevPoint){
-            context.moveTo(prevPoint.x, prevPoint.y)
-        } else {
-            context.moveTo(point.x - 1, point.y);
+        context.strokeStyle = options.strokeColor;
+        context.lineJoin = "round";
+        context.lineWidth = options.strokeWidth;
+        let prevPoint = null;
+        for (let point of points){
+            context.beginPath();
+            if (point.dragging && prevPoint){
+                context.moveTo(prevPoint.x, prevPoint.y)
+            } else {
+                context.moveTo(point.x - 1, point.y);
+            }
+            context.lineTo(point.x, point.y)
+            context.closePath()
+            context.stroke();
+            prevPoint = point;
         }
-        context.lineTo(point.x, point.y)
-        context.closePath()
-        context.stroke();
-        prevPoint = point;
-    }
     }
 
     // функції обробники подій миші
     const mouseDown = event => {
-    isPaint = true
-    addPoint(event.pageX, event.pageY);
-    redraw();
+        isPaint = true
+        addPoint(event.pageX, event.pageY);
+        redraw();
     }
 
     const mouseMove = event => {
-    if(isPaint){
-        addPoint(event.pageX, event.pageY, true);
-        redraw();
-    }
+        if(isPaint){
+            addPoint(event.pageX, event.pageY, true);
+            redraw();
+        }
     }
 
     // додаємо обробку подій
     canvas.addEventListener('mousemove', mouseMove)
     canvas.addEventListener('mousedown', mouseDown)
     canvas.addEventListener('mouseup',() => {
-    isPaint = false;
+        isPaint = false;
     });
     canvas.addEventListener('mouseleave',() => {
-    isPaint = false;
+        isPaint = false;
     });
 
     // TOOLBAR
@@ -116,6 +116,50 @@ function canvas(selector, options){
         redraw();
     })
 
+    // timestamp button
+    const timeBtn = document.createElement('button')
+    timeBtn.classList.add('btn')
+    timeBtn.textContent = 'Timestamp'
+
+    timeBtn.addEventListener('click', () => {
+        const date = new Date().toLocaleTimeString();
+        canvas.strokeText(date);
+    })
+
+    // brush color button
+    const bcolorBtn = document.createElement('button')
+    bcolorBtn.classList.add('btn')
+    bcolorBtn.textContent = 'Brush Color'
+
+    bcolorBtn.addEventListener('click', () => {
+        
+    })
+
+    // brush size button
+    const bsizeBtn = document.createElement('button')
+    bsizeBtn.classList.add('btn')
+    bsizeBtn.textContent = 'Brush Size'
+
+    bsizeBtn.addEventListener('click', () => {
+        
+    })
+
+    // background button
+    const backgrBtn = document.createElement('button')
+    backgrBtn.classList.add('btn')
+    backgrBtn.textContent = 'Background'
+
+    backgrBtn.addEventListener('click', () => {
+        const img = new Image;
+        img.src =`https://www.fillmurray.com/200/300)`;
+        img.onload = () => {
+            context.drawImage(img, 0, 0);}
+    })
+
+    toolBar.insertAdjacentElement('afterbegin', backgrBtn)
+    toolBar.insertAdjacentElement('afterbegin', bsizeBtn)
+    toolBar.insertAdjacentElement('afterbegin', bcolorBtn)
+    toolBar.insertAdjacentElement('afterbegin', timeBtn)
     toolBar.insertAdjacentElement('afterbegin', restoreBtn)
     toolBar.insertAdjacentElement('afterbegin', saveBtn)
     toolBar.insertAdjacentElement('afterbegin', downlBtn)
