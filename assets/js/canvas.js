@@ -15,12 +15,14 @@ function canvas(selector, options){
     let points = [] //масив з точками
 
     // об’являємо функцію додавання точок в масив
-    const addPoint = (x, y, dragging) => {
+    const addPoint = (x, y, dragging, color, size) => {
         // преобразуємо координати події кліка миші відносно canvas
         points.push({
             x: (x - rect.left),
             y: (y - rect.top),
-            dragging: dragging
+            dragging: dragging,
+            color: color,
+            size: size,
         })
     }
 
@@ -35,6 +37,8 @@ function canvas(selector, options){
         let prevPoint = null;
         for (let point of points){
             context.beginPath();
+            context.strokeStyle=point.color;
+            context.lineWidth=point.size;
             if (point.dragging && prevPoint){
                 context.moveTo(prevPoint.x, prevPoint.y)
             } else {
@@ -50,13 +54,13 @@ function canvas(selector, options){
     // функції обробники подій миші
     const mouseDown = event => {
         isPaint = true
-        addPoint(event.pageX, event.pageY);
+        addPoint(event.pageX, event.pageY, false, bcolorBtn.value, bsizeBtn.value);
         redraw();
     }
 
     const mouseMove = event => {
         if(isPaint){
-            addPoint(event.pageX, event.pageY, true);
+            addPoint(event.pageX, event.pageY, true, bcolorBtn.value, bsizeBtn.value);
             redraw();
         }
     }
@@ -90,7 +94,7 @@ function canvas(selector, options){
     const downlBtn = document.createElement('button')
     downlBtn.classList.add('btn')
     downlBtn.textContent = 'Download'
-
+    
     downlBtn.addEventListener('click', () => {
         const dataUrl = canvas.toDataURL("image/png").replace(/^data:image\/[^;]/, 'data:application/octet-stream');
         const newTab = window.open('about:blank','image from canvas');
@@ -110,7 +114,7 @@ function canvas(selector, options){
     const restoreBtn = document.createElement('button')
     restoreBtn.classList.add('btn')
     restoreBtn.textContent = 'Restore'
-
+    
     restoreBtn.addEventListener('click', () => {
         points = JSON.parse(localStorage.getItem('points'));
         redraw();
@@ -122,26 +126,25 @@ function canvas(selector, options){
     timeBtn.textContent = 'Timestamp'
 
     timeBtn.addEventListener('click', () => {
-        const date = new Date().toLocaleTimeString();
-        canvas.strokeText(date);
+        context.fillStyle="black";
+        context.fillText(new Date().toLocaleTimeString(), 10, 20, 80);
     })
 
     // brush color button
-    const bcolorBtn = document.createElement('button')
-    bcolorBtn.classList.add('btn')
-    bcolorBtn.textContent = 'Brush Color'
-
-    bcolorBtn.addEventListener('click', () => {
-        
+    const bcolorBtn = document.getElementById("color-picker")
+    
+    bcolorBtn.addEventListener('input', () => {
+        points.color=bcolorBtn.value;
     })
 
-    // brush size button
-    const bsizeBtn = document.createElement('button')
-    bsizeBtn.classList.add('btn')
-    bsizeBtn.textContent = 'Brush Size'
 
-    bsizeBtn.addEventListener('click', () => {
-        
+    // brush size button
+    const bsizeBtn = document.getElementById("size-picker")
+    //bsizeBtn.classList.add('btn')
+    //bsizeBtn.textContent = 'Brush Size'
+
+    bsizeBtn.addEventListener('input', () => {
+        points.size=bsizeBtn.value;
     })
 
     // background button
